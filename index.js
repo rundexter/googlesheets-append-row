@@ -44,7 +44,8 @@ module.exports = {
 
                 this.fail(err);
             } else {
-
+                console.log(typeof rowContents);
+                console.log(rowContents);
                 spreadsheet.add(rowContents);
 
                 spreadsheet.send(function (err) {
