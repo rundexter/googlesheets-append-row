@@ -15,38 +15,6 @@ module.exports = {
         }
     },
 
-    convertColumnLetter: function(val) {
-        var base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            result = 0;
-
-        var i, j;
-
-        for (i = 0, j = val.length - 1; i < val.length; i += 1, j -= 1) {
-
-            result += Math.pow(base.length, j) * (base.indexOf(val[i]) + 1);
-        }
-
-        return result;
-    },
-
-    pickSheetData: function (rows, startRow, startColumn, numRows, numColumns) {
-        var sheetData = {};
-
-        for (var rowKey = startRow; rowKey <= numRows; rowKey++) {
-
-            for (var columnKey = startColumn; columnKey <= numColumns; columnKey++) {
-
-                if (rows[rowKey] !== undefined && rows[rowKey][columnKey] !== undefined) {
-
-                    sheetData[rowKey] = sheetData[rowKey] || {};
-                    sheetData[rowKey][columnKey] = rows[rowKey][columnKey];
-                }
-            }
-        }
-
-        return sheetData;
-    },
-
     /**
      * The main entry point for the Dexter module
      *
