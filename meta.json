@@ -9,12 +9,8 @@
             "title":"Worksheet ID"
         },
         {
-            "id": "LastColumn",
-            "title":"Last Column Letter"
-        },
-        {
-            "id": "LastRow",
-            "title":"Last Row Number"
+            "id": "rowContents",
+            "title":"Row Contents"
         }
     ],
     //Required. Outputs the module emits.
