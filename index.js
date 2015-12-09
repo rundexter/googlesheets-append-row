@@ -27,7 +27,7 @@ module.exports = {
 
 
         var worksheetId = step.input('worksheet', 1).first(),
-            rowContents = step.input('rowContents').first();
+            rowContents = step.input('rowContents').toArray();
 
         this.checkAuthOptions(step, dexter);
 
