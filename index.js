@@ -4,15 +4,13 @@ var _ = require('lodash'),
 module.exports = {
     checkAuthOptions: function (step, dexter) {
 
-        if(!step.input('rowContents').first()) {
+        if(!step.input('rowContents').first())
+            return 'A [worksheet, rowContents] inputs variable is required for this module';
 
-            this.fail('A [worksheet, rowContents] inputs variable is required for this module');
-        }
+        if(!dexter.environment('google_spreadsheet'))
+            return 'A [google_access_token, google_spreadsheet] environment variable is required for this module';
 
-        if(!dexter.environment('google_access_token') || !dexter.environment('google_spreadsheet')) {
-
-            this.fail('A [google_access_token, google_spreadsheet] environment variable is required for this module');
-        }
+        return false;
     },
 
     /**
@@ -22,20 +20,20 @@ module.exports = {
      * @param {AppData} dexter Container for all data used in this workflow.
      */
     run: function(step, dexter) {
+        var credentials = dexter.provider('google').credentials(),
+            error = this.checkAuthOptions(step, dexter);
 
-        var spreadsheetId = dexter.environment('google_spreadsheet');
-
-
-        var worksheetId = step.input('worksheet', 1).first(),
+        var spreadsheetId = dexter.environment('google_spreadsheet'),
+            worksheetId = step.input('worksheet', 1).first(),
             rowContents;
 
-        if (_.isObject(step.input('rowContents').first()) || _.isArray(step.input('rowContents').first())) {
+        if (error)
+            return this.fail(error);
 
+        if (_.isObject(step.input('rowContents').first()) || _.isArray(step.input('rowContents').first()))
             rowContents = step.input('rowContents').first();
-        } else {
-
+        else
             rowContents = step.input('rowContents').toArray();
-        }
 
         this.checkAuthOptions(step, dexter);
 
@@ -44,28 +42,16 @@ module.exports = {
             worksheetId: worksheetId,
             accessToken: {
                 type: 'Bearer',
-                token: dexter.environment('google_access_token')
+                token: _.get(credentials, 'access_token')
             }
         }, function (err, spreadsheet) {
+            if (err)
+                return this.fail(err);
 
-            if (err) {
-
-                this.fail(err);
-            } else {
-
-                spreadsheet.add(rowContents);
-
-                spreadsheet.send(function (err) {
-
-                    if (err) {
-
-                        this.fail(err);
-                    } else {
-
-                        this.complete({success: true});
-                    }
-                }.bind(this));
-            }
+            spreadsheet.add(rowContents);
+            spreadsheet.send(function (err) {
+                err? this.fail(err) : this.complete({success: true});
+            }.bind(this));
 
         }.bind(this))
     }
