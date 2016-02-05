@@ -8,7 +8,7 @@ module.exports = {
             return 'A [worksheet, rowContents] inputs variable is required for this module';
 
         if(!dexter.environment('google_spreadsheet'))
-            return 'A [google_access_token, google_spreadsheet] environment variable is required for this module';
+            return 'A [google_spreadsheet] environment variable is required for this module';
 
         return false;
     },
@@ -34,8 +34,6 @@ module.exports = {
             rowContents = step.input('rowContents').first();
         else
             rowContents = step.input('rowContents').toArray();
-
-        this.checkAuthOptions(step, dexter);
 
         Spreadsheet.load({
             spreadsheetId: spreadsheetId,
