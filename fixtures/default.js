@@ -62,10 +62,8 @@ module.exports = _.merge({
              * You should update this section with some test input for testing your module
              */
             input: {
-                rowContents: {5: {
-                    7: [[1,2,3],
-                        [4,5,6]]
-                }}
+                rowContents: [[1, 2, 3]]
+                // rowContents: 'moo4'
             }
         }
     }

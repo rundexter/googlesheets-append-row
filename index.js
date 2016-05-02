@@ -46,9 +46,16 @@ module.exports = {
             if (err)
                 return this.fail(err);
 
-            spreadsheet.add(rowContents);
-            spreadsheet.send(function (err) {
-                err? this.fail(err) : this.complete({success: true});
+            spreadsheet.receive(function (err, rows, info) {
+                var newLastRowNumber = info.lastRow + 1;
+                var rowToAdd = {};
+                rowToAdd[parseInt(newLastRowNumber)] = rowContents;
+
+                spreadsheet.add(rowToAdd);
+                spreadsheet.send(function (err) {
+                    err? this.fail(err) : this.complete({success: true});
+                }.bind(this));
+
             }.bind(this));
 
         }.bind(this))
