@@ -1,6 +1,6 @@
 {
    "name": "google-sheets-append-row",
-   "version": "0.0.1",
+   "version": "0.0.2",
    "description": "Appends a row to the spreadsheet",
    "main": "index.js",
    "author": "Run Dexter, Inc",
